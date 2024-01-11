@@ -1,0 +1,55 @@
+// Declare an array to store reminders
+var inputList = [];
+// Initialize index variable to keep track of the current reminder
+var index = 0;
+
+// Event handler for the "Add" button click
+onEvent("addButton", "click", function() {
+  // Append the text from the input field to the inputList array
+  appendItem(inputList, getText("reminderInput"));
+
+  // If this is the first reminder, set the index to 0
+  if (inputList.length === 1) {
+    index = 0;
+  }
+
+  // Clear the text in the input field
+  setProperty("reminderInput", "text", "");
+
+  // Update the screen to reflect the changes
+  updateScreen();
+});
+
+// Function to navigate through reminders with wrap-around
+function navigateReminder(offset) {
+  if (inputList.length > 0) {
+    // Update the index with wrap-around
+    index = (index + offset + inputList.length) % inputList.length;
+
+    // Update the screen to reflect the changes
+    updateScreen();
+  }
+}
+
+// Event handler for the "Left" button click with wrap-around
+onEvent("leftButton", "click", function() {
+  navigateReminder(inputList.length - 1);
+});
+
+// Event handler for the "Right" button click with wrap-around
+onEvent("rightButton", "click", function() {
+  navigateReminder(1);
+});
+
+// ... (remaining code)
+
+// Function to update the display on the screen
+function updateScreen() {
+  if (inputList.length < 1) {
+    setProperty("reminderOutput", "text", "Add reminders!");
+    setProperty("countOutput", "text", "");
+  } else {
+    setProperty("reminderOutput", "text", inputList[index]);
+    setProperty("countOutput", "text", index + 1);
+  }
+}
