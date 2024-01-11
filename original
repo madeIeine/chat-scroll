@@ -1,0 +1,74 @@
+// Declare an empty array to store reminders
+var inputList = [];
+
+// Initialize an index variable to keep track of the current reminder
+var index = 0;
+
+// Event handler for the "Add" button click
+onEvent("addButton", "click", function() {
+  // Append the text from the input field to the inputList array
+  appendItem(inputList, getText("reminderInput"));
+  
+  // Clear the text in the input field
+  setProperty("reminderInput", "text", "");
+  
+  // Update the screen to reflect the changes
+  updateScreen();
+});
+
+// Function to update the display on the screen
+function updateScreen() {
+  // Check if there are no reminders in the inputList
+  if (inputList.length < 1) {
+    // Display a message prompting the user to add reminders
+    setProperty("reminderOutput", "text", "Add reminders!");
+  } else {
+    // Display the current reminder on the screen
+    setProperty("reminderOutput", "text", inputList[index]);
+    
+    // Display the current index (reminder number) on the screen
+    setProperty("countOutput", "text", index + 1);
+  }
+}
+
+// Event handler for the "Left" button click
+onEvent("leftButton", "click", function() {
+  // Check if the current index is greater than 0
+  if (index > 0) {
+    // Decrement the index to move to the previous reminder
+    index = index - 1;
+    
+    // Update the screen to reflect the changes
+    updateScreen();
+  }
+});
+
+// Event handler for the "Right" button click
+onEvent("rightButton", "click", function() {
+  // Check if the current index is less than the last index in inputList
+  if (index < inputList.length - 1) {
+    // Increment the index to move to the next reminder
+    index = index + 1;
+    
+    // Update the screen to reflect the changes
+    updateScreen();
+  }
+});
+
+// Event handler for the "Delete" button click
+onEvent("button1", "click", function() {
+  // Check if there are any reminders in the inputList
+  if (inputList.length > 0) {
+    // Remove the current reminder from the inputList
+    inputList.splice(index, 1);
+    
+    // If the current index is now greater than the last index, adjust it
+    if (index >= inputList.length) {
+      index = inputList.length - 1;
+    }
+
+    // Update the screen to reflect the changes
+    updateScreen();
+  }
+});
+
